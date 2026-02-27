@@ -11,7 +11,7 @@ public class KafkaConsumerService {
     // in-memory list to keep received messages
     private final java.util.List<String> messages = new java.util.concurrent.CopyOnWriteArrayList<>();
 
-    @KafkaListener(topics = "stress-test", groupId = "group_id")
+    @KafkaListener(topics = "stress-test-with-compress", groupId = "group_id")
     public void consume(List<String> messages) {
         this.messages.addAll(messages);
     }
