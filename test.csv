@@ -1,0 +1,9 @@
+id,timestamp,message,severity
+1,2024-01-15T08:30:45Z,Connection established successfully,INFO
+2,2024-01-15T08:31:12Z,Database query timeout,WARNING
+3,2024-01-15T08:32:05Z,User authentication failed,ERROR
+4,2024-01-15T08:33:22Z,Cache cleared successfully,INFO
+5,2024-01-15T08:34:10Z,API rate limit exceeded,WARNING
+6,2024-01-15T08:35:45Z,Service unavailable,ERROR
+7,2024-01-15T08:36:30Z,Request processed in 245ms,INFO
+8,2024-01-15T08:37:18Z,Memory usage at 85%,WARNING

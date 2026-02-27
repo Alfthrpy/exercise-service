@@ -1,5 +1,8 @@
 package com.example.exercise_service.controller;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,22 +29,34 @@ public class KafkaController {
 
     @PostMapping("/send")
     public String sendMessageBatch(@RequestParam("file") MultipartFile file) {
-        try {
-            String content = new String(file.getBytes());
-            String[] messages = content.split("\\r?\\n");
-            for (String message : messages) {
-                producerService.sendMessage(message);
+    
+        try (BufferedReader reader =
+                 new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+                
+            String line;
+                
+            while ((line = reader.readLine()) != null) {
+                if (!line.trim().isEmpty()) {
+                    producerService.sendMessage(line);
+                }
             }
+        
         } catch (Exception e) {
-            e.printStackTrace();
-            return "Error in sending messages: " + e.getMessage();
+            return "Error: " + e.getMessage();
         }
+    
         return "Message sent successfully!";
     }
 
     @GetMapping("/consume")
-    public java.util.List<String> getConsumedMessages() {
-        return consumerService.getMessages();
+    public org.springframework.http.ResponseEntity<?> getConsumedMessages() {
+        java.util.List<String> messages = consumerService.getMessages();
+        return org.springframework.http.ResponseEntity.ok(
+            java.util.Map.of(
+                "batchSize", messages.size(),
+                "messages", messages
+            )
+        );
     }
 
 

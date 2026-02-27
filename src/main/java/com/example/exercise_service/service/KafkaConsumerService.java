@@ -1,5 +1,7 @@
 package com.example.exercise_service.service;
 
+import java.util.List;
+
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +11,9 @@ public class KafkaConsumerService {
     // in-memory list to keep received messages
     private final java.util.List<String> messages = new java.util.concurrent.CopyOnWriteArrayList<>();
 
-    @KafkaListener(topics = "demo", groupId = "group_id")
-    public void consume(String message) {
-        System.out.println("Message received: " + message);
-        messages.add(message);
+    @KafkaListener(topics = "stress-test", groupId = "group_id")
+    public void consume(List<String> messages) {
+        this.messages.addAll(messages);
     }
 
     /**
